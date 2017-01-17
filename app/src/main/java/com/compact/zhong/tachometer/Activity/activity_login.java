@@ -61,6 +61,11 @@ public class activity_login extends AppCompatActivity {
     }
 
 
+    @OnClick(R.id.aboutus_button)
+    public void aboutusBtnCli() {
+        startActivity(new Intent(this, Aboutus_activity.class));
+        finish();
+    }
 
 
 
