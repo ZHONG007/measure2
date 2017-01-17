@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <Button
+            android:text="Choose a file"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/choose_file"
+            />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choosed file:"/>
+
+            <TextView
+                android:id="@+id/choosed_file"
+                android:clickable="true"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:layout_marginTop="0dp"
+                android:fontFamily="sans-serif-smallcaps"
+                android:typeface="normal"
+                android:textColor="#808080"/>
+
+        </LinearLayout>
+
+        </FrameLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:digits="0,1,2,3,4,5,6,7,8,9,abcdefghijklmnopqrstuvwxyz,-,@,_,#,$,%,(,)"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/buttonbackgournd"
+            android:hint=" please type file name,then press create button"
+            android:id="@+id/file_name"
+            android:layout_weight="0.07" />
+
+        <Button
+            android:text="Create a file"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/create_file"
+            android:layout_marginTop="1dp"/>
+
+
+        <Button
+            android:text="Delete a file"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/delete_file"
+            android:cursorVisible="true"
+            android:layout_marginTop="20dp"/>
+
+    </LinearLayout>
+</LinearLayout>

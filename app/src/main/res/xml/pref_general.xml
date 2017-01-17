@@ -1,0 +1,20 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="1"
+        android:inputType="numberSigned"
+        android:key="example_text"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="Data save sampling rate (rmp)" />
+
+    <Preference android:title="Date file management"
+        android:selectable="true"
+        android:key="example_list"
+        android:summary="choose fie where data to be saved">
+        <intent android:action="android.intent.action.data_file_management_Activity"/>
+    </Preference>
+</PreferenceScreen>
