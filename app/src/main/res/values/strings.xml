@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">tachometer</string>
+    <string name="company_name">Compact Instruments</string>
+
+    <string name="text_version">Version</string>
+    <string name="text_app_new_version_update">Update Version</string>
+    <string name="text_app_introduction">Manual</string>
+    <string name="text_thanks">Version</string>
+    <string name="text_about_us">About Us</string>
+    <string name="text_app_feedback">FeedBack</string>
+    <string name="text_copyright">FeedBack</string>
+
+    <string name="Settings_Data_File">Data file</string>
+    <string name="Setting_Sampling_rate">Sampling rate</string>
+    <string name="Setting_unit_display">Unit</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="max_speed">max speed</string>
+    <string name="ave_speed">averge speed</string>
+    <string name="min_speed">min speed</string>
+    <string name="time">time</string>
+
+    <string name="measure_only">Measure only</string>
+    <string name="measure_save">Measure data save</string>
+    <string name="about_us">about us</string>
+    <string name="text_new_app_version">update version</string>
+
+    <string name="pref_default_display_name">1</string>
+
+    <string name="pref_title_add_friends_to_messages">Data save sampling rate</string>
+
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Unit of display</string>
+
+    <string-array name="pref_sync_frequency_titles">
+        <item>rmp</item>
+        <item>rms</item>
+        <item>m/min</item>
+        <item>rms</item>
+        <item>rmp</item>
+        <item>rms</item>
+        <item>rmp</item>
+        <item>rms</item>
+    </string-array>
+
+    <string-array name="pref_sync_frequency_values">
+        <item>rmp</item>
+        <item>rms</item>
+
+
+
+    </string-array>
+
+
+</resources>
