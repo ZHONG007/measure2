@@ -56,6 +56,7 @@ import butterknife.BindView;
 import static android.R.attr.data;
 import static android.R.attr.name;
 import static android.R.attr.path;
+import static android.content.Context.MODE_PRIVATE;
 import static com.compact.zhong.tachometer.R.xml.pref_notification;
 import static com.compact.zhong.tachometer.R.xml.setting_main;
 
@@ -85,6 +86,7 @@ public class MainActivity_save extends AppCompatActivity
 
     @BindView(R.id.MinSpeed)
     TextView minspeed;
+
 
     TextView currentspeedsave;
 
