@@ -15,6 +15,8 @@ import android.nfc.Tag;
 import android.os.Bundle;
 
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -39,10 +41,12 @@ import com.sromku.simple.storage.Storage;
 
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -65,6 +69,8 @@ public class MainActivity_save extends AppCompatActivity
 
     public final String ACTION_USB_PERMISSION = "com.hariharan.arduinousb.USB_PERMISSION";
     private static final String TAG = "MainActivity";
+    public static final int MESSAGE_FROM_SERIAL_PORT = 0;
+    Handler mHandler;
 
     UsbManager usbManager;
     UsbDevice device;
@@ -88,6 +94,7 @@ public class MainActivity_save extends AppCompatActivity
     TextView minspeed;
 
 
+
     TextView currentspeedsave;
 
     @BindView(R.id.buttonStartsave)  Button startbutton;
@@ -105,9 +112,10 @@ public class MainActivity_save extends AppCompatActivity
             try {
                 data = new String(arg0, "UTF-8");
                 data.concat("/n");
-                tvAppend(currentspeedsave, data);
+                //tvAppend(currentspeedsave, data);
+                if (mHandler != null)
+                    mHandler.obtainMessage(MESSAGE_FROM_SERIAL_PORT, data).sendToTarget();
                 File file = new File(pathname);
-
                 try {
                     FileWriter fw = new FileWriter(file,true);
                     BufferedWriter bw = new BufferedWriter(fw);
@@ -115,13 +123,13 @@ public class MainActivity_save extends AppCompatActivity
                     bw.flush();
                     bw.close();
                 }
-
                 catch (IOException e)
                 { }
-
-            } catch (UnsupportedEncodingException e) {
+            }
+            catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
+
         }
     };
 
@@ -162,7 +170,6 @@ public class MainActivity_save extends AppCompatActivity
 
             }
         }
-        ;
     };
 
 
@@ -174,7 +181,7 @@ public class MainActivity_save extends AppCompatActivity
         setSupportActionBar(toolbar);
         setTitle("Measurement Save");
         Get_settinginformation();
-        usbManager = (UsbManager) getSystemService(this.USB_SERVICE);
+        usbManager = (UsbManager) getSystemService(USB_SERVICE);
         currentspeedsave = (TextView) findViewById(R.id.currentSpeedsave);
 
         IntentFilter filter = new IntentFilter();
@@ -182,6 +189,19 @@ public class MainActivity_save extends AppCompatActivity
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
         registerReceiver(broadcastReceiver, filter);
+
+        mHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                {
+                    currentspeedsave.setText((String)msg.obj);
+                }
+                super.handleMessage(msg);
+            }
+        };
+
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -262,7 +282,6 @@ public class MainActivity_save extends AppCompatActivity
             startActivity(new Intent(this, Aboutus_activity.class));
             finish();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -312,12 +331,12 @@ public class MainActivity_save extends AppCompatActivity
         final TextView ftv = tv;
         final CharSequence ftext = text;
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+       // runOnUiThread(new Runnable() {
+           // @Override
+            //public void run() {
                 ftv.setText(ftext);
-            }
-        });
+           // }
+       // });
     }
 
     public static void Savedata(File file, String[] data)
