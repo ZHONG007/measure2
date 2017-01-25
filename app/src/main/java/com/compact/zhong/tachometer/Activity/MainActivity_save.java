@@ -49,6 +49,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -70,7 +71,8 @@ public class MainActivity_save extends AppCompatActivity
     public final String ACTION_USB_PERMISSION = "com.hariharan.arduinousb.USB_PERMISSION";
     private static final String TAG = "MainActivity";
     public static final int MESSAGE_FROM_SERIAL_PORT = 0;
-    Handler mHandler;
+    private Handler mHandler;
+    public String data;
 
     UsbManager usbManager;
     UsbDevice device;
@@ -104,17 +106,17 @@ public class MainActivity_save extends AppCompatActivity
         @Override
         public void onReceivedData(byte[] arg0) {
             //if (pathname!=null)
-            String data = null;
+            //String data = null;
            // BufferedWriter bw = null;
-           // FileWriter fw = null;
+           // FileWriter fw = null;c
 
             //FileOutputStream outputStreamn=FileOutputStream(file);
             try {
-                data = new String(arg0, "UTF-8");
-                data.concat("/n");
+                 data = new String(arg0, "UTF-8");
+                //data.concat("/n");
+               // String data1="100";
                 //tvAppend(currentspeedsave, data);
-                if (mHandler != null)
-                    mHandler.obtainMessage(MESSAGE_FROM_SERIAL_PORT, data).sendToTarget();
+
                 File file = new File(pathname);
                 try {
                     FileWriter fw = new FileWriter(file,true);
@@ -129,6 +131,11 @@ public class MainActivity_save extends AppCompatActivity
             catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
+            //if (mHandler != null)
+            { //mHandler.obtainMessage(MESSAGE_FROM_SERIAL_PORT, data).sendToTarget();
+                //mHandler.obtainMessage(MESSAGE_FROM_SERIAL_PORT, data).sendToTarget();
+            }
+           tvAppend(currentspeedsave,data);
 
         }
     };
@@ -146,7 +153,7 @@ public class MainActivity_save extends AppCompatActivity
                     if (serialPort != null) {
                         if (serialPort.open()) { //Set Serial Connection Parameters.
                             //setUiEnabled(true);
-                            serialPort.setBaudRate(9600);
+                            serialPort.setBaudRate(921600);
                             serialPort.setDataBits(UsbSerialInterface.DATA_BITS_8);
                             serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
                             serialPort.setParity(UsbSerialInterface.PARITY_NONE);
@@ -194,7 +201,15 @@ public class MainActivity_save extends AppCompatActivity
             @Override
             public void handleMessage(Message msg) {
                 {
-                    currentspeedsave.setText((String)msg.obj);
+
+                    //currentspeedsave.setText(null);
+                    int i=1;
+                    while (i<1000){i++;}
+                    i=0;
+                    File file = new File(pathname);
+                    String temp=tail(file);
+                    //currentspeedsave.append(((String)msg.obj));
+                      currentspeedsave.setText(temp);
                 }
                 super.handleMessage(msg);
             }
@@ -331,12 +346,15 @@ public class MainActivity_save extends AppCompatActivity
         final TextView ftv = tv;
         final CharSequence ftext = text;
 
-       // runOnUiThread(new Runnable() {
-           // @Override
-            //public void run() {
-                ftv.setText(ftext);
-           // }
-       // });
+        runOnUiThread(new Runnable() {
+           @Override
+            public void run() {
+               File file = new File(pathname);
+               String temp=tail(file);
+                //ftv.setText(ftext);
+               ftv.setText(temp);
+           }
+        });
     }
 
     public static void Savedata(File file, String[] data)
@@ -424,6 +442,52 @@ public class MainActivity_save extends AppCompatActivity
             filename_saved = prefs.getString("name", "No name defined");//"No name defined" is the default value.
             int idName = prefs.getInt("idName", 0); //0 is the default value.
     }
+    }
+
+    public String tail( File file )
+    {
+        RandomAccessFile fileHandler = null;
+        try {
+            fileHandler = new RandomAccessFile( file, "r" );
+            long fileLength = fileHandler.length() - 1;
+            StringBuilder sb = new StringBuilder();
+
+            for(long filePointer = fileLength; filePointer != -1; filePointer--){
+                fileHandler.seek( filePointer );
+                int readByte = fileHandler.readByte();
+
+                if( readByte == 0xA ) {
+                    if( filePointer == fileLength ) {
+                        continue;
+                    }
+                    break;
+
+                } else if( readByte == 0xD ) {
+                    if( filePointer == fileLength - 1 ) {
+                        continue;
+                    }
+                    break;
+                }
+
+                sb.append( ( char ) readByte );
+            }
+
+            String lastLine = sb.reverse().toString();
+            return lastLine;
+        } catch( java.io.FileNotFoundException e ) {
+            e.printStackTrace();
+            return null;
+        } catch( java.io.IOException e ) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (fileHandler != null )
+                try {
+                    fileHandler.close();
+                } catch (IOException e) {
+                /* ignore */
+                }
+        }
     }
 
 
